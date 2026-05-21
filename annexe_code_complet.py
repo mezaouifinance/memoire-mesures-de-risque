@@ -6,8 +6,7 @@ from scipy import stats, optimize
 from scipy.linalg import cholesky
 import math
 
-np.random.seed(42)        # reproductibilité globale
-
+np.random.seed(42)        
 
 # A.1  TÉLÉCHARGEMENT ET PRÉPARATION DES DONNÉES
 import os
@@ -17,27 +16,16 @@ START   = '2008-01-01'
 END     = '2025-12-31'
 WINDOW  = 250                                     # fenêtre glissante (jours ouvrés)
 
-# Stratégie « CSV figé + yfinance » : on charge le cache data/prices.csv
-# s'il existe (run reproductible au chiffre près), sinon on télécharge via
-# yfinance et on met en cache. Run hors-ligne : python src/data.py --synthetic
-CSV = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data', 'prices.csv')
-if os.path.exists(CSV):
-    prices = pd.read_csv(CSV, index_col=0, parse_dates=True)
-else:
-    import yfinance as yf
-    prices = yf.download(TICKERS, start=START, end=END,
+import yfinance as yf
+prices = yf.download(TICKERS, start=START, end=END,
                          auto_adjust=True, progress=False)['Close']
-    os.makedirs(os.path.dirname(CSV), exist_ok=True)
-    prices.to_csv(CSV)
-prices = prices[TICKERS].dropna()                 # alignement des calendriers
+prices = prices[TICKERS].dropna()                 
 
-# Log-rendements puis pertes (convention « pertes positives »)
 returns      = np.log(prices / prices.shift(1)).dropna()
 weights      = np.full(len(TICKERS), 1.0 / len(TICKERS))   # équipondéré
 port_returns = returns @ weights                  # rendement du portefeuille
 port_losses  = -port_returns                      # X_t = -r_t
 
-# Pertes par actif (utiles pour l'allocation Euler en A.10)
 losses_per_asset = -returns
 
 print(f"Période : {port_losses.index[0].date()} -> {port_losses.index[-1].date()}")
