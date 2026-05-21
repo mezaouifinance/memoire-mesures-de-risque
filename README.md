@@ -3,6 +3,7 @@
 Ce dépôt contient le code Python utilisé pour reproduire les résultats empiriques du mémoire :
 
 **Théorie des mesures de risque**  
+Mehdi Zaoui & Zakarya Sellami
 Master 1 Mathématiques Appliquées à l’Économie et à la Finance  
 Université Paris 1 Panthéon-Sorbonne
 
