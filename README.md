@@ -106,3 +106,4 @@ Le code est fourni afin de rendre reproductibles les résultats empiriques du m�
 
 Les valeurs numériques peuvent légèrement varier si les données sont retéléchargées depuis `yfinance`, en raison d’éventuels ajustements de prix.# m-moire-mesures-de-risque
 # m-moire-mesures-de-risque
+# risk-measures-thesis
